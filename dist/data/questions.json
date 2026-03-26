@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "question": "Qual e a capital do Brasil?",
+    "options": ["Sao Paulo", "Brasilia", "Rio de Janeiro", "Belo Horizonte"],
+    "correctAnswer": "Brasilia"
+  },
+  {
+    "id": 2,
+    "question": "Quanto e 2 + 2?",
+    "options": ["3", "4", "5", "6"],
+    "correctAnswer": "4"
+  },
+  {
+    "id": 3,
+    "question": "Qual linguagem e usada para estilizar paginas web?",
+    "options": ["HTML", "Python", "CSS", "SQL"],
+    "correctAnswer": "CSS"
+  },
+  {
+    "id": 4,
+    "question": "Qual hook do React e usado para controlar estado local?",
+    "options": ["useEffect", "useState", "useRef", "useContext"],
+    "correctAnswer": "useState"
+  },
+  {
+    "id": 5,
+    "question": "Qual metodo converte um texto JSON em objeto JavaScript?",
+    "options": ["JSON.stringify", "JSON.parse", "JSON.object", "JSON.format"],
+    "correctAnswer": "JSON.parse"
+  }
+]

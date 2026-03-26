@@ -1,0 +1,1 @@
+Projeto usa React com componentes funcionais em JSX e hooks nativos (useState, useEffect). Estrutura simples e organizada por componentes. Dados do quiz sao mantidos no frontend sem backend. Estilos centralizados em CSS puro no arquivo src/index.css, com classes sem CSS Modules. JSON de perguntas usa chaves id, question, options e correctAnswer.

@@ -1,0 +1,1 @@
+Ao concluir alteracoes neste projeto, instalar dependencias se necessario e validar com `npm run build`. Se a tarefa envolver UX ou dados do quiz, conferir tambem o fluxo principal em desenvolvimento com `npm run dev`, incluindo carregamento do JSON local e exibicao da tela de resultados.

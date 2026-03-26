@@ -1,0 +1,303 @@
+[
+  {
+    "id": 1,
+    "question": "Em uma API ASP.NET Core com alta taxa de escrita, qual abordagem ajuda mais a manter consistencia e reduzir acoplamento ao integrar com outros servicos?",
+    "options": ["Publicar eventos diretamente do controller antes do commit", "Usar transacao local junto com padrao Outbox para publicar eventos apos persistencia", "Executar chamadas HTTP sincronas para todos os servicos dependentes", "Salvar dados sem transacao para reduzir latencia"],
+    "correctAnswer": "Usar transacao local junto com padrao Outbox para publicar eventos apos persistencia"
+  },
+  {
+    "id": 2,
+    "question": "Ao diagnosticar lentidao em uma API .NET sob carga, qual metrica tecnica costuma ser a melhor primeira pista para diferenciar gargalo de aplicacao e gargalo externo?",
+    "options": ["Quantidade de comentarios no codigo", "Tempo total da request quebrado por spans, dependencias e uso de recursos", "Numero de branches no repositorio", "Quantidade de arquivos no projeto"],
+    "correctAnswer": "Tempo total da request quebrado por spans, dependencias e uso de recursos"
+  },
+  {
+    "id": 3,
+    "question": "Em C#, qual situacao indica mau uso de async/await e pode causar perda de throughput em APIs web?",
+    "options": ["Usar await em chamadas I/O bound", "Bloquear com .Result ou .Wait() em fluxo assincrono", "Retornar Task em metodos assincronos", "Propagar CancellationToken entre camadas"],
+    "correctAnswer": "Bloquear com .Result ou .Wait() em fluxo assincrono"
+  },
+  {
+    "id": 4,
+    "question": "Em React, qual sinal costuma indicar que um componente precisa ser refatorado por responsabilidade excessiva?",
+    "options": ["Ele recebe poucas props e tem render simples", "Concentra busca de dados, regra de negocio, estado complexo e muitos efeitos em um unico arquivo", "Usa hooks nativos do React", "Renderiza uma lista pequena"],
+    "correctAnswer": "Concentra busca de dados, regra de negocio, estado complexo e muitos efeitos em um unico arquivo"
+  },
+  {
+    "id": 5,
+    "question": "Em Next.js, quando uma pagina depende de dados sensiveis por usuario e SEO nao e o foco principal, qual abordagem costuma ser mais adequada?",
+    "options": ["SSG para todos os usuarios", "CSR apos validacao/autorizacao adequada", "Gerar HTML estatico unico e compartilhar entre usuarios", "Revalidar pagina publica a cada segundo"],
+    "correctAnswer": "CSR apos validacao/autorizacao adequada"
+  },
+  {
+    "id": 6,
+    "question": "Na AWS, qual sinal sugere que talvez ECS ou outro runtime containerizado seja melhor escolha do que Lambda?",
+    "options": ["Processamento curto e event-driven", "Necessidade de controle fino de runtime, execucao prolongada ou dependencia pesada", "Baixo volume e custo variavel", "Eventos simples disparados por fila"],
+    "correctAnswer": "Necessidade de controle fino de runtime, execucao prolongada ou dependencia pesada"
+  },
+  {
+    "id": 7,
+    "question": "Ao expor arquivos em S3 para download controlado por aplicacao, qual pratica e mais segura?",
+    "options": ["Deixar o bucket publico e esconder a URL", "Gerar URLs assinadas com expiracao adequada", "Salvar credenciais AWS no frontend", "Encaminhar todos os arquivos por email"],
+    "correctAnswer": "Gerar URLs assinadas com expiracao adequada"
+  },
+  {
+    "id": 8,
+    "question": "Em um ambiente com microsservicos containerizados, qual vantagem operacional o ECS oferece?",
+    "options": ["Substitui a necessidade de logs", "Ajuda no agendamento, escalonamento e operacao de containers", "Elimina a necessidade de imagens Docker", "Torna banco relacional desnecessario"],
+    "correctAnswer": "Ajuda no agendamento, escalonamento e operacao de containers"
+  },
+  {
+    "id": 9,
+    "question": "Em CI/CD, qual criterio de qualidade e mais forte para bloquear merge em branch principal?",
+    "options": ["Build verde, testes relevantes passando e checks minimos de qualidade/seguranca", "Apenas aprovacao verbal do time", "Somente ausencia de conflitos Git", "Pipeline opcional para acelerar entrega"],
+    "correctAnswer": "Build verde, testes relevantes passando e checks minimos de qualidade/seguranca"
+  },
+  {
+    "id": 10,
+    "question": "No GitHub Actions, qual pratica melhora seguranca e manutencao dos workflows?",
+    "options": ["Hardcode de tokens no YAML", "Uso de secrets, permissoes minimas e actions versionadas", "Executar tudo com permissao administrativa", "Compartilhar credenciais em comentarios do PR"],
+    "correctAnswer": "Uso de secrets, permissoes minimas e actions versionadas"
+  },
+  {
+    "id": 11,
+    "question": "Qual risco senior voce considera ao adicionar muitos indices em tabelas de alta escrita?",
+    "options": ["Nenhum, indice sempre melhora tudo", "Maior custo de escrita, manutencao e armazenamento", "Impossibilidade de usar transacoes", "Quebra automatica de foreign keys"],
+    "correctAnswer": "Maior custo de escrita, manutencao e armazenamento"
+  },
+  {
+    "id": 12,
+    "question": "Ao modelar um banco para dominio transacional, o que melhor caracteriza uma boa chave estrangeira?",
+    "options": ["Existe apenas para acelerar consultas", "Representa relacionamento valido e protege integridade referencial", "Substitui qualquer indice composto", "E opcional quando ha frontend validando dados"],
+    "correctAnswer": "Representa relacionamento valido e protege integridade referencial"
+  },
+  {
+    "id": 13,
+    "question": "Se voce precisa listar todos os pedidos, inclusive os que ainda nao possuem pagamento, qual join tende a ser o mais adequado partindo da tabela de pedidos?",
+    "options": ["INNER JOIN", "LEFT JOIN", "CROSS JOIN", "SELF JOIN"],
+    "correctAnswer": "LEFT JOIN"
+  },
+  {
+    "id": 14,
+    "question": "Em versionamento de API, qual postura tende a ser mais madura em ambientes com varios consumidores?",
+    "options": ["Quebrar contrato sempre que melhorar o design", "Versionar mudancas breaking e comunicar estrategia de deprecacao", "Evitar versionamento e alterar payload livremente", "Manter endpoint unico para sempre sem evolucao"],
+    "correctAnswer": "Versionar mudancas breaking e comunicar estrategia de deprecacao"
+  },
+  {
+    "id": 15,
+    "question": "Em code review senior, qual comportamento agrega mais valor ao time?",
+    "options": ["Revisar apenas estilo e ignorar risco funcional", "Avaliar corretude, impacto arquitetural, testes e operabilidade", "Aprovar rapidamente qualquer PR pequeno", "Focar em preferencia pessoal acima de tudo"],
+    "correctAnswer": "Avaliar corretude, impacto arquitetural, testes e operabilidade"
+  },
+  {
+    "id": 16,
+    "question": "Qual combinacao de testes costuma trazer melhor confianca para um sistema full stack em producao?",
+    "options": ["Apenas testes manuais", "Mistura equilibrada de testes unitarios, integracao e fluxos criticos end-to-end", "Somente snapshot de frontend", "Apenas teste de carga trimestral"],
+    "correctAnswer": "Mistura equilibrada de testes unitarios, integracao e fluxos criticos end-to-end"
+  },
+  {
+    "id": 17,
+    "question": "Ao integrar um backend .NET com servico externo instavel, qual combinacao e mais resiliente?",
+    "options": ["Retry sem limite e sem timeout", "Timeout, retry com criterio, circuit breaker e observabilidade", "Loop infinito ate responder", "Tratar toda falha como sucesso parcial silencioso"],
+    "correctAnswer": "Timeout, retry com criterio, circuit breaker e observabilidade"
+  },
+  {
+    "id": 18,
+    "question": "Em listas React com reordenacao frequente, qual escolha de key e mais adequada?",
+    "options": ["Indice do array", "Valor aleatorio gerado a cada render", "Identificador estavel e unico do item", "Qualquer texto fixo repetido"],
+    "correctAnswer": "Identificador estavel e unico do item"
+  },
+  {
+    "id": 19,
+    "question": "No contexto de observabilidade, qual situacao mostra maturidade operacional real?",
+    "options": ["Existem logs, mas sem correlacao entre servicos", "Metricas, logs e traces permitem seguir uma requisicao ponta a ponta", "So ha alerta de CPU alta", "Problemas sao investigados apenas manualmente em producao"],
+    "correctAnswer": "Metricas, logs e traces permitem seguir uma requisicao ponta a ponta"
+  },
+  {
+    "id": 20,
+    "question": "Pensando em escalabilidade horizontal e resiliencia, qual decisao arquitetural tende a ser mais correta?",
+    "options": ["Persistir sessao apenas em memoria local de cada instancia", "Projetar servicos stateless e externalizar estado quando necessario", "Acoplar processamento critico ao filesystem local", "Executar jobs manuais diretamente na maquina de producao"],
+    "correctAnswer": "Projetar servicos stateless e externalizar estado quando necessario"
+  },
+  {
+    "id": 21,
+    "question": "Em ASP.NET Core, qual o principal beneficio de usar CancellationToken em operacoes longas ou chamadas externas?",
+    "options": ["Melhorar tipagem estatica", "Permitir cancelar trabalho desnecessario e liberar recursos", "Substituir tratamento de excecao", "Aumentar automaticamente throughput do banco"],
+    "correctAnswer": "Permitir cancelar trabalho desnecessario e liberar recursos"
+  },
+  {
+    "id": 22,
+    "question": "Ao usar Entity Framework Core em leitura de dados sem alteracoes posteriores, qual opcao tende a ser mais performatica?",
+    "options": ["AsTracking()", "NoTracking()", "IncludeAll()", "AutoCommit()"],
+    "correctAnswer": "NoTracking()"
+  },
+  {
+    "id": 23,
+    "question": "Qual problema o padrao N+1 costuma causar em ORMs como Entity Framework?",
+    "options": ["Deadlock entre transacoes distribuidas", "Muitas consultas extras ao carregar relacionamentos de forma ineficiente", "Perda de indices em runtime", "Incompatibilidade entre C# e SQL"],
+    "correctAnswer": "Muitas consultas extras ao carregar relacionamentos de forma ineficiente"
+  },
+  {
+    "id": 24,
+    "question": "Em C#, qual colecao e geralmente mais apropriada para buscas por chave com acesso rapido?",
+    "options": ["List<T>", "Queue<T>", "Dictionary<TKey, TValue>", "Stack<T>"],
+    "correctAnswer": "Dictionary<TKey, TValue>"
+  },
+  {
+    "id": 25,
+    "question": "Qual afirmacao descreve melhor o objetivo de idempotencia em APIs?",
+    "options": ["Garantir que toda chamada gere um novo recurso", "Permitir repetir a mesma operacao sem alterar o resultado final inesperadamente", "Executar apenas requests GET", "Evitar qualquer tipo de cache"],
+    "correctAnswer": "Permitir repetir a mesma operacao sem alterar o resultado final inesperadamente"
+  },
+  {
+    "id": 26,
+    "question": "Se uma API precisa suportar alto volume de leitura de dados pouco mutaveis, qual estrategia costuma trazer melhor custo-beneficio?",
+    "options": ["Desativar todos os caches", "Aplicar cache em camada apropriada com politica de expiracao", "Executar a mesma query mais vezes para aquecer conexoes", "Migrar toda leitura para processamento sincrono"],
+    "correctAnswer": "Aplicar cache em camada apropriada com politica de expiracao"
+  },
+  {
+    "id": 27,
+    "question": "Em SQL, qual abordagem tende a ser mais segura contra SQL Injection?",
+    "options": ["Concatenar strings manualmente", "Usar queries parametrizadas", "Montar SQL a partir do input do usuario", "Confiar apenas na validacao do frontend"],
+    "correctAnswer": "Usar queries parametrizadas"
+  },
+  {
+    "id": 28,
+    "question": "Quando uma consulta esta lenta, qual passo inicial costuma ser mais tecnico e assertivo?",
+    "options": ["Aumentar memoria do servidor sem analisar a query", "Inspecionar plano de execucao e indices usados", "Reiniciar o banco de dados", "Mover a tabela para outro schema"],
+    "correctAnswer": "Inspecionar plano de execucao e indices usados"
+  },
+  {
+    "id": 29,
+    "question": "Em PostgreSQL, qual recurso e especialmente util para armazenar documentos JSON e ainda consultar campos internos com eficiencia?",
+    "options": ["XMLTYPE", "JSONB", "BFILE", "ROWGUID"],
+    "correctAnswer": "JSONB"
+  },
+  {
+    "id": 30,
+    "question": "No SQL Server, qual mecanismo ajuda a encapsular logica reutilizavel de leitura sem necessariamente materializar dados?",
+    "options": ["VIEW", "TRIGGER", "CHECKPOINT", "FILEGROUP"],
+    "correctAnswer": "VIEW"
+  },
+  {
+    "id": 31,
+    "question": "Em React, qual cenario justifica mais o uso de useEffect?",
+    "options": ["Calcular um valor derivado simples de props", "Sincronizar o componente com um efeito externo como fetch ou subscription", "Criar constantes imutaveis", "Substituir qualquer evento de clique"],
+    "correctAnswer": "Sincronizar o componente com um efeito externo como fetch ou subscription"
+  },
+  {
+    "id": 32,
+    "question": "Qual problema pode ocorrer ao usar o indice do array como key em listas dinamicas no React?",
+    "options": ["Falha de tipagem no JSX", "Reconciliacao incorreta quando itens mudam de ordem ou sao removidos", "Impossibilidade de usar hooks", "Quebra do StrictMode automaticamente"],
+    "correctAnswer": "Reconciliacao incorreta quando itens mudam de ordem ou sao removidos"
+  },
+  {
+    "id": 33,
+    "question": "No Next.js, qual abordagem e mais comum para proteger rotas privadas no lado do servidor?",
+    "options": ["Confiar apenas em esconder botoes no frontend", "Validar autenticacao na camada de servidor ou middleware antes de renderizar", "Armazenar senha no localStorage", "Executar apenas CSS condicional"],
+    "correctAnswer": "Validar autenticacao na camada de servidor ou middleware antes de renderizar"
+  },
+  {
+    "id": 34,
+    "question": "Ao dividir um frontend React em componentes, qual principio tende a melhorar manutencao em sistemas grandes?",
+    "options": ["Criar um componente gigante com toda a pagina", "Separar componentes por responsabilidade e composicao", "Evitar props e usar apenas variaveis globais", "Duplicar logica para reduzir imports"],
+    "correctAnswer": "Separar componentes por responsabilidade e composicao"
+  },
+  {
+    "id": 35,
+    "question": "Qual tecnica costuma melhorar o tempo de carregamento percebido em aplicacoes React/Next.js?",
+    "options": ["Enviar todo o JavaScript possivel no primeiro carregamento", "Code splitting e lazy loading de partes nao criticas", "Desabilitar compactacao de assets", "Colocar imagens em base64 sempre"],
+    "correctAnswer": "Code splitting e lazy loading de partes nao criticas"
+  },
+  {
+    "id": 36,
+    "question": "Na AWS, qual combinacao e comum para hospedar frontend estatico com alta disponibilidade e CDN?",
+    "options": ["Lambda + RDS", "S3 + CloudFront", "ECS + DynamoDB", "SNS + SQS"],
+    "correctAnswer": "S3 + CloudFront"
+  },
+  {
+    "id": 37,
+    "question": "Qual servico da AWS e mais apropriado para fila e desacoplamento entre produtores e consumidores?",
+    "options": ["SQS", "Route 53", "IAM", "ECR"],
+    "correctAnswer": "SQS"
+  },
+  {
+    "id": 38,
+    "question": "Em arquitetura distribuida, qual e uma vantagem importante de mensageria assicrona?",
+    "options": ["Garantir consistencia forte imediata em todos os servicos", "Reduzir acoplamento temporal entre servicos", "Eliminar completamente necessidade de monitoramento", "Substituir autenticação e autorizacao"],
+    "correctAnswer": "Reduzir acoplamento temporal entre servicos"
+  },
+  {
+    "id": 39,
+    "question": "Qual pratica e mais adequada para gerenciamento de segredos em pipelines e workloads na nuvem?",
+    "options": ["Salvar credenciais no repositorio Git", "Usar variaveis de ambiente comuns compartilhadas por email", "Centralizar segredos em servico apropriado com controle de acesso", "Hardcode no codigo para facilitar deploy"],
+    "correctAnswer": "Centralizar segredos em servico apropriado com controle de acesso"
+  },
+  {
+    "id": 40,
+    "question": "Qual metrica de pipeline melhor ajuda a identificar queda de qualidade antes do deploy?",
+    "options": ["Numero de emojis no commit", "Taxa de sucesso de testes e qualidade estatica", "Quantidade de branches locais", "Tempo de login no GitHub"],
+    "correctAnswer": "Taxa de sucesso de testes e qualidade estatica"
+  },
+  {
+    "id": 41,
+    "question": "Em Git, qual estrategia tende a facilitar rastreabilidade de mudancas em times grandes?",
+    "options": ["Push direto em producao sempre", "Pull requests com revisao e historico claro", "Excluir branches sem revisar", "Manter codigo fora de versionamento ate o final"],
+    "correctAnswer": "Pull requests com revisao e historico claro"
+  },
+  {
+    "id": 42,
+    "question": "Qual cenario descreve melhor um teste de integracao?",
+    "options": ["Validar uma funcao pura isoladamente", "Verificar interacao real entre API, banco ou infraestrutura controlada", "Medir layout visual com CSS", "Testar apenas nomes de metodos"],
+    "correctAnswer": "Verificar interacao real entre API, banco ou infraestrutura controlada"
+  },
+  {
+    "id": 43,
+    "question": "Qual tecnica ajuda a reduzir regressao ao evoluir contratos de API consumidos por varios clientes?",
+    "options": ["Remover campos sem comunicar ninguem", "Versionar a API e manter compatibilidade quando possivel", "Renomear endpoints livremente em horario comercial", "Trocar formato JSON para XML sem aviso"],
+    "correctAnswer": "Versionar a API e manter compatibilidade quando possivel"
+  },
+  {
+    "id": 44,
+    "question": "Se um endpoint apresenta latencia alta apenas em horarios de pico, qual suspeita tecnica e razoavel investigar primeiro?",
+    "options": ["Cor do botao no frontend", "Contencao de recursos como conexoes, locks ou queries caras", "Nome da branch Git", "Versao do navegador do usuario interno apenas"],
+    "correctAnswer": "Contencao de recursos como conexoes, locks ou queries caras"
+  },
+  {
+    "id": 45,
+    "question": "Qual principio do SOLID recomenda que classes de alto nivel nao dependam diretamente de implementacoes concretas?",
+    "options": ["Single Responsibility Principle", "Open Closed Principle", "Dependency Inversion Principle", "Liskov Substitution Principle"],
+    "correctAnswer": "Dependency Inversion Principle"
+  },
+  {
+    "id": 46,
+    "question": "Em um sistema com alta concorrencia, por que transacoes devem ser o mais curtas possivel?",
+    "options": ["Para aumentar chance de lock prolongado", "Para reduzir contencao e impacto em throughput", "Para impedir uso de indices", "Para desabilitar consistencia de dados"],
+    "correctAnswer": "Para reduzir contencao e impacto em throughput"
+  },
+  {
+    "id": 47,
+    "question": "Quando usar Docker em pipelines e ambientes, qual vantagem pratica ele traz?",
+    "options": ["Elimina necessidade de logs", "Padroniza ambiente de execucao e reduz diferencas entre maquinas", "Substitui automaticamente testes de integracao", "Dispensa orquestracao em qualquer cenario"],
+    "correctAnswer": "Padroniza ambiente de execucao e reduz diferencas entre maquinas"
+  },
+  {
+    "id": 48,
+    "question": "Qual abordagem de deploy costuma reduzir risco durante liberacoes em producao?",
+    "options": ["Blue-green ou canary deployment", "Deploy manual sem monitoramento", "Alterar banco diretamente em horario de pico sem plano", "Publicar tudo de uma vez sem rollback"],
+    "correctAnswer": "Blue-green ou canary deployment"
+  },
+  {
+    "id": 49,
+    "question": "Em sistemas orientados a eventos, o que significa eventual consistency?",
+    "options": ["Todos os dados ficam consistentes instantaneamente", "Pode haver atraso ate que todos os componentes reflitam o mesmo estado", "O banco relacional deixa de ser necessario", "Mensagens nunca podem ser reprocessadas"],
+    "correctAnswer": "Pode haver atraso ate que todos os componentes reflitam o mesmo estado"
+  },
+  {
+    "id": 50,
+    "question": "Para uma vaga senior full stack, qual comportamento tecnico costuma ser mais valorizado alem de saber codar?",
+    "options": ["Focar apenas na propria task sem contexto", "Tomar decisoes considerando arquitetura, trade-offs, qualidade e impacto no negocio", "Evitar documentacao e comunicacao tecnica", "Preferir solucoes complexas para demonstrar conhecimento"],
+    "correctAnswer": "Tomar decisoes considerando arquitetura, trade-offs, qualidade e impacto no negocio"
+  }
+]
+  

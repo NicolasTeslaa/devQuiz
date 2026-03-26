@@ -1,0 +1,1 @@
+Comandos uteis no projeto DevQuiz (Darwin/zsh): `npm install` para instalar dependencias; `npm run dev` para iniciar o servidor de desenvolvimento Vite; `npm run build` para gerar o bundle de producao; `ls`, `rg --files`, `git status --short` para inspecao rapida do repositorio.
