@@ -1,7 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 export function Login() {
-  return (
-    <>
-      <style>{`
+    const navigate = useNavigate();
+
+    return (
+        <>
+            <style>{`
         .login-page {
           min-height: 100vh;
           display: flex;
@@ -183,54 +187,55 @@ export function Login() {
         }
       `}</style>
 
-      <main className="login-page">
-        <section className="login-card">
-          <div className="login-logo">DevQuiz</div>
+            <main className="login-page">
+                <section className="login-card">
+                    <div className="login-logo">DevQuiz</div>
 
-          <span className="login-badge">Acesse sua conta</span>
+                    <span className="login-badge">Acesse sua conta</span>
 
-          <h1 className="login-title">Entre para continuar</h1>
+                    <h1 className="login-title">Entre para continuar</h1>
 
-          <p className="login-subtitle">
-            Acesse sua conta para testar conhecimentos, acompanhar sua evolução
-            e praticar tecnologias do mercado.
-          </p>
+                    <p className="login-subtitle">
+                        Acesse sua conta para testar conhecimentos, acompanhar sua evolução
+                        e praticar tecnologias do mercado.
+                    </p>
 
-          <form>
-            <div className="form-group">
-              <label htmlFor="email">E-mail</label>
-              <input id="email" type="email" placeholder="seuemail@email.com" />
-            </div>
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="email">E-mail</label>
+                            <input id="email" type="email" placeholder="seuemail@email.com" />
+                        </div>
 
-            <div className="form-group">
-              <label htmlFor="password">Senha</label>
-              <input id="password" type="password" placeholder="Sua senha" />
-            </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Senha</label>
+                            <input id="password" type="password" placeholder="Sua senha" />
+                        </div>
 
-            <div className="login-options">
-              <label className="remember">
-                <input type="checkbox" />
-                Lembrar senha
-              </label>
+                        <div className="login-options">
+                            <label className="remember">
+                                <input type="checkbox" />
+                                Lembrar senha
+                            </label>
 
-              <button type="button" className="forgot-button">
-                Esqueci minha senha
-              </button>
-            </div>
+                            <button type="button" className="forgot-button"   onClick={() => navigate("/forgotPassword")}>
+                                Esqueci minha senha
+                            </button>
+                        </div>
 
-            <button type="submit" className="login-button-primary">
-              Entrar
-            </button>
-          </form>
+                        <button type="submit" className="login-button-primary">
+                            Entrar
+                        </button>
+                    </form>
 
-          <div className="register-area">
-            Ainda não tem conta?
-            <button type="button" className="register-button">
-              Registrar
-            </button>
-          </div>
-        </section>
-      </main>
-    </>
-  );
+                    <div className="register-area">
+                        Ainda não tem conta?
+                        <button type="button" className="register-button"
+                            onClick={() => navigate("/register")}>
+                            Registrar
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </>
+    );
 }
