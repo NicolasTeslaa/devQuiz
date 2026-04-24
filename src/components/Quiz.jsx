@@ -128,7 +128,6 @@ function Quiz() {
     <main className="app-shell">
       <header className="hero">
         <p className="eyebrow">DevQuiz</p>
-        <h1>Quiz interativo com React e JSON local</h1>
         <p>
           Responda uma pergunta por vez, confira se acertou e acompanhe o
           progresso ate o resultado final.
