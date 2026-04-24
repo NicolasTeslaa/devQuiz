@@ -2,3 +2,8 @@
 /frontend/node_modules
 /.vite
 /dist
+/.dotnet
+/.nuget
+/backend/**/bin
+/backend/**/obj
+/backend/.vs
