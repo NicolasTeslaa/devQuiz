@@ -8,7 +8,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "8000:80"
+      - "${FRONTEND_PORT:-8000}:80"
     restart: unless-stopped
 
   backend:
@@ -27,7 +27,7 @@ services:
       Jwt__Audience: ${JWT_AUDIENCE:-DevQuiz.Frontend}
       Cors__AllowedOrigins__0: http://localhost:8000
     ports:
-      - "8001:8080"
+      - "${BACKEND_PORT:-8001}:8080"
     restart: unless-stopped
 
   db:
