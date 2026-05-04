@@ -94,4 +94,48 @@ public class QuizService : IQuizService
                 x.FinishedAtUtc))
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<AttemptDetailResponse> GetAttemptDetailAsync(Guid userId, Guid attemptId, CancellationToken cancellationToken)
+    {
+        var attempt = await _dbContext.QuizAttempts
+            .AsNoTracking()
+            .Where(x => x.Id == attemptId && x.UserId == userId)
+            .Select(x => new
+            {
+                x.Id,
+                x.Score,
+                x.TotalQuestions,
+                x.Percentage,
+                x.FinishedAtUtc
+            })
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw new InvalidOperationException("Tentativa nao encontrada.");
+
+        var answers = await _dbContext.QuizAnswers
+            .AsNoTracking()
+            .Where(x => x.AttemptId == attemptId)
+            .OrderBy(x => x.Question.ExternalId)
+            .Select(x => new AttemptQuestionDetail(
+                x.QuestionId,
+                x.Question.ExternalId,
+                x.Question.Technology.Name,
+                x.Question.Text,
+                x.SelectedAnswer,
+                x.Question.CorrectAnswer,
+                x.IsCorrect))
+            .ToListAsync(cancellationToken);
+
+        var finalGrade = attempt.TotalQuestions > 0
+            ? Math.Round((decimal)attempt.Score * 10 / attempt.TotalQuestions, 1)
+            : 0;
+
+        return new AttemptDetailResponse(
+            attempt.Id,
+            attempt.Score,
+            attempt.TotalQuestions,
+            attempt.Percentage,
+            finalGrade,
+            attempt.FinishedAtUtc,
+            answers);
+    }
 }

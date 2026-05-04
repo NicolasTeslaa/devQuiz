@@ -41,4 +41,5 @@ export const api = {
   getQuestions: () => request("/api/quiz/questions"),
   submitAttempt: (body) => request("/api/quiz/attempts", { method: "POST", body: JSON.stringify(body) }),
   getMyAttempts: () => request("/api/quiz/attempts/me"),
+  getAttemptDetail: (attemptId) => request(`/api/quiz/attempts/${attemptId}`),
 };

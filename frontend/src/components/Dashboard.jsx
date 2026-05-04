@@ -21,6 +21,10 @@ export function Dashboard() {
   const [isLoadingTech, setIsLoadingTech] = useState(true);
   const [techError, setTechError] = useState("");
   const [user, setUser] = useState(getCurrentUser());
+  const [attempts, setAttempts] = useState([]);
+  const [selectedAttempt, setSelectedAttempt] = useState(null);
+  const [isLoadingAttempts, setIsLoadingAttempts] = useState(false);
+  const [attemptsError, setAttemptsError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,10 +44,35 @@ export function Dashboard() {
     loadTechnologies();
   }, []);
 
+  useEffect(() => {
+    if (!user || !isAuthenticated()) {
+      setAttempts([]);
+      setSelectedAttempt(null);
+      return;
+    }
+
+    async function loadAttempts() {
+      try {
+        setIsLoadingAttempts(true);
+        setAttemptsError("");
+        const response = await api.getMyAttempts();
+        setAttempts(Array.isArray(response) ? response : []);
+      } catch (error) {
+        setAttemptsError(error.message ?? "Nao foi possivel carregar seus resultados.");
+      } finally {
+        setIsLoadingAttempts(false);
+      }
+    }
+
+    loadAttempts();
+  }, [user]);
+
   function handleAuthClick() {
     if (isAuthenticated()) {
       clearSession();
       setUser(null);
+      setAttempts([]);
+      setSelectedAttempt(null);
       return;
     }
 
@@ -57,6 +86,28 @@ export function Dashboard() {
     }
 
     navigate("/quiz");
+  }
+
+  async function handleSelectAttempt(attemptId) {
+    try {
+      setAttemptsError("");
+      const detail = await api.getAttemptDetail(attemptId);
+      setSelectedAttempt(detail);
+    } catch (error) {
+      setAttemptsError(error.message ?? "Nao foi possivel carregar o detalhe do quiz.");
+    }
+  }
+
+  function formatAttemptDate(value) {
+    if (!value) return "Data indisponivel";
+
+    return new Intl.DateTimeFormat("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(value));
   }
 
   return (
@@ -102,6 +153,29 @@ export function Dashboard() {
         .tech-card h3 { margin: 0 0 6px; font-size: 16px; }
         .tech-card p { color: #94a3b8; font-size: 13px; }
         .status { color: #bfdbfe; font-size: 14px; margin-top: 12px; }
+        .results-panel { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 14px; align-items: start; }
+        .attempt-list, .attempt-detail { min-height: 260px; padding: 18px; border-radius: 18px; background: rgba(15, 23, 42, 0.72); border: 1px solid rgba(148, 163, 184, 0.18); }
+        .attempt-list { display: grid; gap: 10px; }
+        .attempt-card { width: 100%; text-align: left; padding: 14px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.2); background: rgba(2, 6, 23, 0.42); color: #f8fafc; cursor: pointer; transition: 0.2s ease; }
+        .attempt-card:hover, .attempt-card.active { border-color: rgba(96, 165, 250, 0.62); background: rgba(37, 99, 235, 0.16); transform: translateY(-1px); }
+        .attempt-card strong, .attempt-card span { display: block; }
+        .attempt-card span { margin-top: 4px; color: #94a3b8; font-size: 13px; }
+        .empty-state { color: #94a3b8; margin: 0; line-height: 1.55; }
+        .detail-header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+        .detail-header h3 { margin: 0 0 6px; font-size: 18px; }
+        .score-pill { flex-shrink: 0; padding: 8px 10px; border-radius: 999px; background: rgba(34, 197, 94, 0.14); border: 1px solid rgba(74, 222, 128, 0.3); color: #bbf7d0; font-weight: 900; }
+        .answer-groups { display: grid; gap: 16px; }
+        .answer-group h4 { margin: 0 0 10px; color: #cbd5e1; }
+        .answer-items { display: grid; gap: 10px; max-height: 360px; overflow: auto; padding-right: 4px; }
+        .answer-item { padding: 12px; border-radius: 14px; background: rgba(2, 6, 23, 0.38); border: 1px solid rgba(148, 163, 184, 0.16); }
+        .answer-item.correct { border-color: rgba(74, 222, 128, 0.38); }
+        .answer-item.incorrect { border-color: rgba(248, 113, 113, 0.42); }
+        .answer-item strong { display: block; margin-bottom: 8px; }
+        .answer-item p { margin: 4px 0; color: #94a3b8; font-size: 13px; }
+        .answer-item .answer-ok { color: #86efac; }
+        .answer-item .answer-bad { color: #fca5a5; }
+        @media (max-width: 860px) { .actions-grid, .results-panel { grid-template-columns: 1fr; } .tech-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .dashboard { padding: 16px; } .topbar, .detail-header { flex-direction: column; } .tech-grid { grid-template-columns: 1fr; } }
       `}</style>
 
       <main className="dashboard">
@@ -132,6 +206,80 @@ export function Dashboard() {
               <div className="action-card"><div className="icon">Stack</div><h3>Praticar tecnologias</h3><p>Fortaleca seus fundamentos por stack.</p></div>
               <div className="action-card"><div className="icon">Meta</div><h3>Evoluir como dev</h3><p>Use seus resultados para guiar seus estudos.</p></div>
             </div>
+          </section>
+
+          <section id="results-list">
+            <div className="section-header"><h2>Resultados dos quizzes</h2><p>Acompanhe suas tentativas finalizadas e revise acertos e erros.</p></div>
+            {!user ? (
+              <div className="attempt-detail">
+                <p className="empty-state">Entre na sua conta para ver o historico dos quizzes finalizados.</p>
+              </div>
+            ) : (
+              <div className="results-panel">
+                <div className="attempt-list">
+                  {isLoadingAttempts ? <p className="empty-state">Carregando resultados...</p> : null}
+                  {attemptsError ? <p className="status">{attemptsError}</p> : null}
+                  {!isLoadingAttempts && attempts.length === 0 ? <p className="empty-state">Nenhuma tentativa finalizada ainda.</p> : null}
+                  {attempts.map((attempt) => (
+                    <button
+                      type="button"
+                      key={attempt.attemptId}
+                      className={`attempt-card ${selectedAttempt?.attemptId === attempt.attemptId ? "active" : ""}`}
+                      onClick={() => handleSelectAttempt(attempt.attemptId)}
+                    >
+                      <strong>Quiz de {formatAttemptDate(attempt.finishedAtUtc)}</strong>
+                      <span>{attempt.score}/{attempt.totalQuestions} questoes acertadas · {Number(attempt.percentage).toFixed(0)}%</span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="attempt-detail">
+                  {!selectedAttempt ? (
+                    <p className="empty-state">Clique em um quiz para ver tudo que voce acertou e errou.</p>
+                  ) : (
+                    <>
+                      <div className="detail-header">
+                        <div>
+                          <h3>Quiz de {formatAttemptDate(selectedAttempt.finishedAtUtc)}</h3>
+                          <p className="empty-state">{selectedAttempt.score}/{selectedAttempt.totalQuestions} questoes acertadas</p>
+                        </div>
+                        <span className="score-pill">Nota {Number(selectedAttempt.finalGrade).toFixed(1)}</span>
+                      </div>
+
+                      <div className="answer-groups">
+                        <div className="answer-group">
+                          <h4>Erros</h4>
+                          <div className="answer-items">
+                            {selectedAttempt.answers.filter((answer) => !answer.isCorrect).length === 0 ? <p className="empty-state">Nenhum erro nessa tentativa.</p> : null}
+                            {selectedAttempt.answers.filter((answer) => !answer.isCorrect).map((answer) => (
+                              <article key={answer.questionId} className="answer-item incorrect">
+                                <strong>{answer.technologyName} · Questao {answer.externalId}</strong>
+                                <p>{answer.question}</p>
+                                <p className="answer-bad">Sua resposta: {answer.selectedAnswer}</p>
+                                <p className="answer-ok">Correta: {answer.correctAnswer}</p>
+                              </article>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="answer-group">
+                          <h4>Acertos</h4>
+                          <div className="answer-items">
+                            {selectedAttempt.answers.filter((answer) => answer.isCorrect).map((answer) => (
+                              <article key={answer.questionId} className="answer-item correct">
+                                <strong>{answer.technologyName} · Questao {answer.externalId}</strong>
+                                <p>{answer.question}</p>
+                                <p className="answer-ok">Resposta: {answer.correctAnswer}</p>
+                              </article>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
           </section>
 
           <section id="tech-list">

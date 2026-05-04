@@ -44,6 +44,15 @@ public class QuizController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
+    [HttpGet("attempts/{attemptId:guid}")]
+    public async Task<ActionResult<AttemptDetailResponse>> Detail(Guid attemptId, CancellationToken cancellationToken)
+    {
+        var userId = GetUserId();
+        var result = await _quizService.GetAttemptDetailAsync(userId, attemptId, cancellationToken);
+        return Ok(result);
+    }
+
     private Guid GetUserId()
     {
         var sub = User.FindFirstValue(ClaimTypes.NameIdentifier)
