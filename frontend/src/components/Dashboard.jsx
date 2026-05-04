@@ -26,6 +26,7 @@ export function Dashboard() {
   const [isLoadingAttempts, setIsLoadingAttempts] = useState(false);
   const [attemptsError, setAttemptsError] = useState("");
   const navigate = useNavigate();
+  const loggedIn = Boolean(user) && isAuthenticated();
 
   useEffect(() => {
     async function loadTechnologies() {
@@ -110,6 +111,12 @@ export function Dashboard() {
     }).format(new Date(value));
   }
 
+  const totalFinished = attempts.length;
+  const latestAttempt = attempts[0];
+  const bestAttempt = attempts.reduce((best, attempt) => (
+    !best || attempt.percentage > best.percentage ? attempt : best
+  ), null);
+
   return (
     <>
       <style>{`
@@ -128,12 +135,15 @@ export function Dashboard() {
         .logo { font-size: 22px; font-weight: 900; letter-spacing: -0.8px; }
         .login-button { padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(148, 163, 184, 0.35); background: rgba(15, 23, 42, 0.7); color: #f8fafc; font-weight: 800; cursor: pointer; transition: 0.2s ease; }
         .login-button:hover { background: rgba(37, 99, 235, 0.25); border-color: rgba(96, 165, 250, 0.65); transform: translateY(-2px); }
-        .hero { margin-bottom: 32px; }
-        .hero-content { padding: 28px; border: 1px solid rgba(148, 163, 184, 0.22); border-radius: 24px; background: rgba(15, 23, 42, 0.72); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32); backdrop-filter: blur(16px); }
+        .hero { margin-bottom: 28px; }
+        .hero-content { padding: 30px; border: 1px solid rgba(148, 163, 184, 0.22); border-radius: 18px; background: rgba(15, 23, 42, 0.72); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32); backdrop-filter: blur(16px); }
+        .hero-content.compact { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 22px; align-items: center; }
         .badge { display: inline-flex; padding: 7px 12px; border-radius: 999px; color: #bfdbfe; background: rgba(37, 99, 235, 0.18); border: 1px solid rgba(96, 165, 250, 0.35); font-size: 12px; font-weight: 800; margin-bottom: 14px; }
         .hero h1 { max-width: 760px; font-size: clamp(30px, 4.5vw, 52px); line-height: 1.02; margin: 0 0 16px; letter-spacing: -1.6px; }
+        .hero-content.compact h1 { font-size: clamp(28px, 3.2vw, 40px); margin-bottom: 10px; }
         .highlight { background: linear-gradient(90deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero p { color: #cbd5e1; font-size: 16px; line-height: 1.65; max-width: 660px; margin: 0 0 22px; }
+        .hero-content.compact p { margin-bottom: 0; }
         .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
         .btn { border: 0; cursor: pointer; padding: 11px 16px; border-radius: 12px; color: white; font-weight: 800; font-size: 14px; transition: 0.2s ease; }
         .btn-primary { background: linear-gradient(135deg, #2563eb, #7c3aed); box-shadow: 0 12px 26px rgba(37, 99, 235, 0.32); }
@@ -142,12 +152,19 @@ export function Dashboard() {
         .section-header { margin: 30px 0 14px; }
         .section-header h2 { font-size: 24px; margin: 0; letter-spacing: -0.6px; }
         .section-header p { color: #94a3b8; margin: 4px 0 0; }
-        .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-        .action-card { padding: 20px; min-height: 190px; border-radius: 20px; background: rgba(15, 23, 42, 0.76); border: 1px solid rgba(148, 163, 184, 0.2); transition: 0.22s ease; }
-        .action-card:hover { transform: translateY(-4px); border-color: rgba(96, 165, 250, 0.55); }
-        .icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 14px; background: linear-gradient(135deg, #2563eb, #7c3aed); font-size: 20px; margin-bottom: 14px; }
-        .action-card h3 { margin: 0 0 8px; font-size: 18px; }
-        .action-card p { color: #94a3b8; margin-bottom: 16px; }
+        .command-panel { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr); gap: 14px; align-items: stretch; }
+        .primary-action { display: grid; align-content: space-between; min-height: 220px; padding: 22px; border-radius: 18px; background: linear-gradient(135deg, rgba(37, 99, 235, 0.24), rgba(15, 23, 42, 0.82)); border: 1px solid rgba(96, 165, 250, 0.32); }
+        .primary-action h3, .quick-actions h3 { margin: 0 0 8px; font-size: 22px; letter-spacing: -0.4px; }
+        .primary-action p, .quick-actions p, .metric-card span { color: #94a3b8; margin: 0; line-height: 1.55; }
+        .quick-actions { display: grid; gap: 12px; }
+        .quick-link { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; text-align: left; padding: 16px; border-radius: 16px; color: #f8fafc; background: rgba(15, 23, 42, 0.76); border: 1px solid rgba(148, 163, 184, 0.2); cursor: pointer; transition: 0.2s ease; }
+        .quick-link:hover { transform: translateY(-2px); border-color: rgba(96, 165, 250, 0.55); background: rgba(30, 41, 59, 0.9); }
+        .quick-link strong, .quick-link span { display: block; }
+        .quick-link span { color: #94a3b8; font-size: 13px; margin-top: 3px; }
+        .quick-link .arrow { color: #93c5fd; font-weight: 900; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+        .metric-card { padding: 16px; border-radius: 16px; background: rgba(15, 23, 42, 0.72); border: 1px solid rgba(148, 163, 184, 0.18); }
+        .metric-card strong { display: block; margin-top: 8px; font-size: 24px; }
         .tech-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
         .tech-card { padding: 16px; border-radius: 18px; background: rgba(15, 23, 42, 0.72); border: 1px solid rgba(148, 163, 184, 0.18); }
         .tech-card h3 { margin: 0 0 6px; font-size: 16px; }
@@ -174,8 +191,8 @@ export function Dashboard() {
         .answer-item p { margin: 4px 0; color: #94a3b8; font-size: 13px; }
         .answer-item .answer-ok { color: #86efac; }
         .answer-item .answer-bad { color: #fca5a5; }
-        @media (max-width: 860px) { .actions-grid, .results-panel { grid-template-columns: 1fr; } .tech-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 560px) { .dashboard { padding: 16px; } .topbar, .detail-header { flex-direction: column; } .tech-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 860px) { .hero-content.compact, .command-panel, .results-panel { grid-template-columns: 1fr; } .metrics-grid { grid-template-columns: repeat(2, 1fr); } .tech-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .dashboard { padding: 16px; } .topbar, .detail-header { flex-direction: column; } .hero-content { padding: 22px; } .metrics-grid, .tech-grid { grid-template-columns: 1fr; } }
       `}</style>
 
       <main className="dashboard">
@@ -186,26 +203,67 @@ export function Dashboard() {
           </header>
 
           <section className="hero">
-            <div className="hero-content">
-              <span className="badge">Teste e evolucao profissional</span>
-              <h1>Teste seus conhecimentos em programacao <span className="highlight">e evolua como dev</span></h1>
-              <p>O DevQuiz ajuda voce a validar o que realmente sabe, identificar falhas e evoluir de forma pratica com quizzes baseados em tecnologias do mercado.</p>
-              {user ? <p className="status">Conectado como {user.name}.</p> : null}
-              {techError ? <p className="status">{techError}</p> : null}
-              <div className="hero-actions">
-                <button className="btn btn-primary" onClick={handleStartQuiz}>Comecar quiz</button>
-                <button className="btn btn-secondary" onClick={() => document.getElementById("tech-list")?.scrollIntoView({ behavior: "smooth" })}>Ver tecnologias</button>
+            {loggedIn ? (
+              <div className="hero-content compact">
+                <div>
+                  <span className="badge">Painel do aluno</span>
+                  <h1>Bem-vindo, <span className="highlight">{user.name}</span></h1>
+                  <p>Continue sua pratica, acompanhe resultados e ajuste os assuntos do proximo quiz.</p>
+                  {techError ? <p className="status">{techError}</p> : null}
+                </div>
+                <div className="hero-actions">
+                  <button className="btn btn-primary" onClick={handleStartQuiz}>Comecar quiz</button>
+                  <button className="btn btn-secondary" onClick={() => document.getElementById("results-list")?.scrollIntoView({ behavior: "smooth" })}>Ver resultados</button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="hero-content">
+                <span className="badge">Teste e evolucao profissional</span>
+                <h1>Teste seus conhecimentos em programacao <span className="highlight">e evolua como dev</span></h1>
+                <p>O DevQuiz ajuda voce a validar o que realmente sabe, identificar falhas e evoluir de forma pratica com quizzes baseados em tecnologias do mercado.</p>
+                {techError ? <p className="status">{techError}</p> : null}
+                <div className="hero-actions">
+                  <button className="btn btn-primary" onClick={handleStartQuiz}>Comecar quiz</button>
+                  <button className="btn btn-secondary" onClick={() => document.getElementById("tech-list")?.scrollIntoView({ behavior: "smooth" })}>Ver tecnologias</button>
+                </div>
+              </div>
+            )}
           </section>
 
           <section>
-            <div className="section-header"><h2>O que voce quer fazer?</h2><p>Escolha como deseja evoluir hoje.</p></div>
-            <div className="actions-grid">
-              <div className="action-card"><div className="icon">Quiz</div><h3>Testar conhecimentos</h3><p>Descubra seu nivel atual com perguntas objetivas.</p><button className="btn btn-primary" onClick={handleStartQuiz}>Iniciar</button></div>
-              <div className="action-card"><div className="icon">Stack</div><h3>Praticar tecnologias</h3><p>Fortaleca seus fundamentos por stack.</p></div>
-              <div className="action-card"><div className="icon">Meta</div><h3>Evoluir como dev</h3><p>Use seus resultados para guiar seus estudos.</p></div>
+            <div className="section-header"><h2>{loggedIn ? "Seu painel" : "Como funciona"}</h2><p>{loggedIn ? "Acesse rapidamente as principais areas." : "Comece pelo quiz, revise o resultado e pratique por assunto."}</p></div>
+            <div className="command-panel">
+              <div className="primary-action">
+                <div>
+                  <span className="badge">{loggedIn ? "Proxima tentativa" : "Fluxo principal"}</span>
+                  <h3>{loggedIn ? "Iniciar um novo quiz" : "Teste seus conhecimentos"}</h3>
+                  <p>{loggedIn ? "Use os filtros de assuntos dentro do quiz para focar em tecnologias especificas." : "Responda perguntas objetivas, receba sua pontuacao e veja exatamente onde precisa revisar."}</p>
+                </div>
+                <div className="hero-actions">
+                  <button className="btn btn-primary" onClick={handleStartQuiz}>{loggedIn ? "Comecar agora" : "Entrar para iniciar"}</button>
+                  <button className="btn btn-secondary" onClick={() => document.getElementById("tech-list")?.scrollIntoView({ behavior: "smooth" })}>Ver assuntos</button>
+                </div>
+              </div>
+
+              <div className="quick-actions">
+                <button type="button" className="quick-link" onClick={() => document.getElementById("results-list")?.scrollIntoView({ behavior: "smooth" })}>
+                  <span><strong>{loggedIn ? "Resultados" : "Historico de desempenho"}</strong><span>{loggedIn ? "Revise acertos, erros e notas." : "Depois de logar, suas tentativas ficam salvas aqui."}</span></span>
+                  <span className="arrow">-&gt;</span>
+                </button>
+                <button type="button" className="quick-link" onClick={() => document.getElementById("tech-list")?.scrollIntoView({ behavior: "smooth" })}>
+                  <span><strong>Assuntos disponiveis</strong><span>{technologies.length} tecnologias para praticar.</span></span>
+                  <span className="arrow">-&gt;</span>
+                </button>
+              </div>
             </div>
+
+            {loggedIn ? (
+              <div className="metrics-grid">
+                <div className="metric-card"><span>Tentativas finalizadas</span><strong>{isLoadingAttempts ? "..." : totalFinished}</strong></div>
+                <div className="metric-card"><span>Ultimo resultado</span><strong>{latestAttempt ? `${latestAttempt.score}/${latestAttempt.totalQuestions}` : "-"}</strong></div>
+                <div className="metric-card"><span>Melhor aproveitamento</span><strong>{bestAttempt ? `${Number(bestAttempt.percentage).toFixed(0)}%` : "-"}</strong></div>
+              </div>
+            ) : null}
           </section>
 
           <section id="results-list">
