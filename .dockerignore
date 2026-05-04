@@ -1,0 +1,13 @@
+.git
+.github
+.vite
+.dotnet
+.nuget
+.docker-buildx
+**/bin
+**/obj
+**/node_modules
+**/.vs
+frontend/dist
+backend/test-write.tmp
+*.log

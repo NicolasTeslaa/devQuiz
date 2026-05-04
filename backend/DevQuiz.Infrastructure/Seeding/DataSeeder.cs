@@ -21,7 +21,11 @@ public static class DataSeeder
 
         if (!await dbContext.Questions.AnyAsync(cancellationToken))
         {
-            var questionFile = Path.GetFullPath(Path.Combine(contentRootPath, "..", "..", "frontend", "public", "data", "questions.json"));
+            var configuredQuestionFile = Environment.GetEnvironmentVariable("Seed__QuestionsPath");
+            var questionFile = !string.IsNullOrWhiteSpace(configuredQuestionFile)
+                ? configuredQuestionFile
+                : Path.GetFullPath(Path.Combine(contentRootPath, "..", "..", "frontend", "public", "data", "questions.json"));
+
             if (File.Exists(questionFile))
             {
                 var json = await File.ReadAllTextAsync(questionFile, cancellationToken);

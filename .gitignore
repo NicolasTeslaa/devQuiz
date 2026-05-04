@@ -4,6 +4,12 @@
 /dist
 /.dotnet
 /.nuget
+/.docker-buildx
+.env
+.env.*
+!.env.example
+dotnet-*.log
+infra-restore.log
 /backend/**/bin
 /backend/**/obj
 /backend/.vs
